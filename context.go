@@ -2,14 +2,15 @@ package lec
 
 import (
 	"context"
-	"log/slog"
 	"sync"
 	"time"
+
+	"github.com/gosuit/sl"
 )
 
 type Context interface {
-	Logger() *slog.Logger
-	SlHandler() slog.Handler
+	Logger() sl.Logger
+	SlHandler() sl.Handler
 	AddValue(key string, val interface{}, forLog bool)
 	GetValue(key string) *Value
 	GetValues() map[string]Value
@@ -24,12 +25,11 @@ type Context interface {
 }
 
 type ctx struct {
-	log       *slog.Logger
-	slHandler slog.Handler
-	data      map[string]Value
-	errors    []error
-	mu        sync.Mutex
-	base      context.Context
+	log    sl.Logger
+	data   map[string]Value
+	errors []error
+	mu     sync.Mutex
+	base   context.Context
 }
 
 type Value struct {
@@ -37,21 +37,19 @@ type Value struct {
 	Share bool
 }
 
-func New(log *slog.Logger) Context {
+func New(log sl.Logger) Context {
 	return &ctx{
-		log:       slog.New(log.Handler()),
-		slHandler: log.Handler(),
-		data:      make(map[string]Value),
-		base:      context.TODO(),
+		log:  log,
+		data: make(map[string]Value),
+		base: context.TODO(),
 	}
 }
 
-func NewWithCtx(base context.Context, log *slog.Logger) Context {
+func NewWithCtx(base context.Context, log sl.Logger) Context {
 	return &ctx{
-		log:       slog.New(log.Handler()),
-		slHandler: log.Handler(),
-		data:      make(map[string]Value),
-		base:      base,
+		log:  log,
+		data: make(map[string]Value),
+		base: base,
 	}
 }
 
@@ -80,16 +78,16 @@ func (c *ctx) AddValue(key string, val interface{}, share bool) {
 	}
 
 	if share {
-		(*c.log) = *c.log.With(key, val)
+		c.log = c.log.With(key, val)
 	}
 }
 
-func (c *ctx) Logger() *slog.Logger {
+func (c *ctx) Logger() sl.Logger {
 	return c.log
 }
 
-func (c *ctx) SlHandler() slog.Handler {
-	return c.slHandler
+func (c *ctx) SlHandler() sl.Handler {
+	return c.log.Handler()
 }
 
 func (c *ctx) AddErr(err error) {

@@ -3,15 +3,15 @@ package lec
 import (
 	"context"
 	"errors"
-	"log/slog"
 	"testing"
 	"time"
 
+	"github.com/gosuit/sl"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestNew(t *testing.T) {
-	log := slog.Default()
+	log := sl.Default()
 	c := New(log)
 
 	assert.Equal(t, c.Logger(), log)
@@ -20,7 +20,7 @@ func TestNew(t *testing.T) {
 
 func TestNewWithCtx(t *testing.T) {
 	base := context.TODO()
-	log := slog.Default()
+	log := sl.Default()
 
 	key := "key"
 	value := "value"
@@ -45,7 +45,7 @@ func TestNewWithCtx(t *testing.T) {
 }
 
 func TestGetValue(t *testing.T) {
-	c := New(slog.Default())
+	c := New(sl.Default())
 
 	key := "key"
 	value := "value"
@@ -56,7 +56,7 @@ func TestGetValue(t *testing.T) {
 }
 
 func TestGetValues(t *testing.T) {
-	c := New(slog.Default())
+	c := New(sl.Default())
 
 	key := "key"
 	value := "value"
@@ -69,7 +69,7 @@ func TestGetValues(t *testing.T) {
 }
 
 func TestAddValue(t *testing.T) {
-	c := New(slog.Default())
+	c := New(sl.Default())
 
 	key := "key"
 	value := "value"
@@ -80,21 +80,21 @@ func TestAddValue(t *testing.T) {
 }
 
 func TestLogger(t *testing.T) {
-	log := slog.Default()
+	log := sl.Default()
 	c := New(log)
 
 	assert.Equal(t, log, c.Logger())
 }
 
 func TestSlHandler(t *testing.T) {
-	log := slog.Default()
+	log := sl.Default()
 	c := New(log)
 
 	assert.Equal(t, log.Handler(), c.SlHandler())
 }
 
 func TestAddErr(t *testing.T) {
-	c := New(slog.Default())
+	c := New(sl.Default())
 
 	err := errors.New("some error")
 	c.AddErr(err)
@@ -103,7 +103,7 @@ func TestAddErr(t *testing.T) {
 }
 
 func TestGetErr(t *testing.T) {
-	c := New(slog.Default())
+	c := New(sl.Default())
 
 	err := errors.New("some error")
 	c.AddErr(err)
@@ -112,7 +112,7 @@ func TestGetErr(t *testing.T) {
 }
 
 func TestHasErr(t *testing.T) {
-	c := New(slog.Default())
+	c := New(sl.Default())
 
 	err := errors.New("some error")
 	c.AddErr(err)
@@ -122,7 +122,7 @@ func TestHasErr(t *testing.T) {
 
 func TestDeadline(t *testing.T) {
 	base := context.TODO()
-	log := slog.Default()
+	log := sl.Default()
 
 	base, cancel := context.WithTimeout(base, 5*time.Second)
 	defer cancel()
@@ -138,7 +138,7 @@ func TestDeadline(t *testing.T) {
 
 func TestDone(t *testing.T) {
 	base := context.TODO()
-	log := slog.Default()
+	log := sl.Default()
 
 	base, cancel := context.WithTimeout(base, 5*time.Second)
 	defer cancel()
@@ -150,7 +150,7 @@ func TestDone(t *testing.T) {
 
 func TestErr(t *testing.T) {
 	base := context.TODO()
-	log := slog.Default()
+	log := sl.Default()
 
 	base, cancel := context.WithTimeout(base, 5*time.Second)
 	defer cancel()
@@ -162,7 +162,7 @@ func TestErr(t *testing.T) {
 
 func TestValue(t *testing.T) {
 	base := context.TODO()
-	log := slog.Default()
+	log := sl.Default()
 
 	key := "key"
 	value := "value"
