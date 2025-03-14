@@ -22,7 +22,9 @@ func TestNewWithCtx(t *testing.T) {
 	base := context.TODO()
 	log := sl.Default()
 
-	key := "key"
+	type keyType string
+
+	key := keyType("key")
 	value := "value"
 
 	base = context.WithValue(base, key, value)
@@ -164,7 +166,9 @@ func TestValue(t *testing.T) {
 	base := context.TODO()
 	log := sl.Default()
 
-	key := "key"
+	type keyType string
+
+	key := keyType("key")
 	value := "value"
 
 	base = context.WithValue(base, key, value)
