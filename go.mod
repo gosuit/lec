@@ -3,7 +3,7 @@ module github.com/gosuit/lec
 go 1.24.0
 
 require (
-	github.com/gosuit/sl v1.0.4
+	github.com/gosuit/sl v1.0.5
 	github.com/stretchr/testify v1.10.0
 )
 
